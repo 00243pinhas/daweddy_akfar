@@ -1,0 +1,18 @@
+# Afkar Child Theme
+
+## Description
+This is the child theme for the Afkar WordPress theme. It allows you to customize the parent theme without losing the ability to update it.
+
+## Installation
+1. Download the child theme folder (`afkar-child`).
+2. Upload the `afkar-child` folder to the `/wp-content/themes/` directory of your WordPress installation.
+3. Go to the WordPress admin dashboard.
+4. Navigate to Appearance > Themes.
+5. Activate the Afkar Child theme.
+
+## Usage
+You can add custom styles to the `style.css` file of the child theme. Any modifications to the functionality of the parent theme can be added in the `functions.php` file.
+
+## Important Notes
+- Always ensure that the parent theme (Afkar) is installed and activated.
+- When updating the parent theme, your customizations in the child theme will remain intact.
