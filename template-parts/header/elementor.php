@@ -19,7 +19,7 @@ $header_type = get_post_meta( $post_header->ID, 'header_type', true );
 			            <?php echo Elementor\Plugin::$instance->frontend->get_builder_content_for_display( $args['header_layout']); ?>
 	                </div>
 		        </div>
-		    </div>
+		    </div
 		</div>
 	<?php endif; ?>
 	<?php if(isset($args['header_layout_sticky']) && $args['header_layout_sticky'] > 0) : ?>
