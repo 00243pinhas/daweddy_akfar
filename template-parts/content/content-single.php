@@ -7,7 +7,7 @@
 $post_tag = afkar()->get_theme_opt( 'post_tag', true );
 $post_navigation = afkar()->get_theme_opt( 'post_navigation', false );
 // $post_social_share = afkar()->get_theme_opt( 'post_social_share', false );
-$post_author_box_info = afkar()->get_theme_opt( 'post_author_box_info', false );
+// $post_author_box_info = afkar()->get_theme_opt( 'post_author_box_info', false );
 $align_content_post = afkar()->get_page_opt( 'align_content_post', 'content-left' );
 $post_feature_image_on = afkar()->get_page_opt( 'post_feature_image_on', true );
 $post_title_on = afkar()->get_page_opt( 'post_title_on', true );
@@ -20,7 +20,7 @@ $post_title_on = afkar()->get_page_opt( 'post_title_on', true );
     <?php if($post_feature_image_on) { ?>
         <?php if (has_post_thumbnail()) {
             echo '<div class="pxl-item--image">'; ?>
-                <?php the_post_thumbnail('afkar-lager'); ?>
+                <?php the_post_thumbnail('afkar-lager', array('class' => 'pxl-single-thumbnail-wide')); ?>
             <?php echo '</div>';
         } 
     } ?>
@@ -47,14 +47,14 @@ $post_title_on = afkar()->get_page_opt( 'post_title_on', true );
     <?php } ?>
 
     <?php if($post_navigation) { afkar()->blog->get_post_nav(); } ?>
-    <?php if($post_author_box_info) : ?>
+    <!-- <?php if($post_author_box_info) : ?> -->
         <div class="pxl--author-info">
             <div class="entry-author-avatar">
-                <?php echo get_avatar( get_the_author_meta( 'ID' ), 160 ); ?>
+                <!-- <?php echo get_avatar( get_the_author_meta( 'ID' ), 160 ); ?> -->
             </div>
             <div class="entry-author-meta">
                 <h3 class="author-name">
-                    <?php the_author_posts_link(); ?>
+                    <!-- <?php the_author_posts_link(); ?> -->
                 </h3>
                 <div class="author-description">
                     <?php the_author_meta( 'description' ); ?>

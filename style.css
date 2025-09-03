@@ -17,3 +17,14 @@ Text Domain: afkar-child
 /* .pxl-title-margin-bottom {
     margin-bottom: 24px;
 } */
+
+
+.pxl-item--image .pxl-single-thumbnail-wide {
+    width: 100%;
+
+}
+
+
+.elementor-346 .elementor-element.elementor-element-5bad35e {
+    background-image: url('https://yourdomain.com/wp-content/uploads/2025/09/#') !important;
+}
