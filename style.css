@@ -19,12 +19,47 @@ Text Domain: afkar-child
 } */
 
 
-.pxl-item--image .pxl-single-thumbnail-wide {
-    width: 100%;
-
-}
-
 
 .elementor-346 .elementor-element.elementor-element-5bad35e {
-    background-image: url('https://yourdomain.com/wp-content/uploads/2025/09/#') !important;
+    background-image: url('http://localhost:10013/wp-content/uploads/2022/07/cropped-D267pb-scaled-1.jpg') !important;
+    background: rgba(0, 0, 0, 0.5); /* adjust darkness */
+    /* opacity: 0.5; */
+    transition: background 0.3s, border-radius 0.3s, opacity 0.3s;
+    /* filter: brightness(70%); */
 }
+
+.elementor-346 .elementor-element.elementor-element-5123a2b .pxl-heading .pxl-item--title {
+    color: white;
+    font-size: 48px;
+    font-weight: 600;
+    margin-bottom: 0px;
+}
+
+.pxl-breadcrumb li a {
+    color: white;
+   
+}
+
+.pxl-breadcrumb li:first-child:before {
+    background-color: transparent;
+    content: "\f147";
+    font-size: 17px;
+    position: relative;
+    top: 4px;
+    color: white;
+    margin-right: 15px;
+}
+
+.pxl-breadcrumb li span{
+
+    font-size: inherit;
+    color: white;
+
+}
+
+
+
+
+
+/* TODO : need To fix the dark issue on the blog background */
+/* Todo need to fix the black logo on a black background */
