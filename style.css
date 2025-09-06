@@ -57,6 +57,72 @@ Text Domain: afkar-child
 
 }
 
+/* Dress Progress — child theme fallback styles */
+.dress-progress {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 0 18px;
+}
+
+/* Use parent's .card if exists; otherwise apply our card look */
+.dress-card {
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 22px rgba(23, 29, 49, 0.06);
+  border: 1px solid rgba(0,0,0,0.03);
+  display: flex;
+  flex-direction: column;
+}
+
+/* media area */
+.dress-card-media {
+  width: 100%;
+  background: #000;
+  display: block;
+}
+
+/* ensure embedded iframes scale */
+.dp-embed-wrapper {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+}
+.dp-embed-wrapper iframe,
+.dp-embed-wrapper embed,
+.dp-embed-wrapper object {
+  position: absolute;
+  top:0; left:0;
+  width:100%; height:100%;
+  border:0;
+}
+
+/* body area */
+.dress-card-body {
+  padding: 18px;
+}
+.dress-card-title {
+  margin: 0 0 8px;
+  font-size: 18px;
+  color: #222;
+}
+.dress-card-meta {
+  margin: 0 0 12px;
+  color: #777;
+  font-size: 13px;
+}
+
+/* responsive: 2 columns on medium+ screens */
+@media (min-width: 860px) {
+  .dress-progress { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* small tweaks so the "card" class from parent won't break layout */
+.card.dress-card { /* keep both selectors so parent .card styles add on top */ }
 
 
 

@@ -15,6 +15,25 @@ add_filter('get_custom_logo', function($html) {
 
 
 <?php
+function create_dress_progress_table() {
+    global $wpdb;
+    $table_name = $wpdb->prefix . "dress_progress";
+    $charset_collate = $wpdb->get_charset_collate();
+
+    $sql = "CREATE TABLE IF NOT EXISTS $table_name (
+        id mediumint(9) NOT NULL AUTO_INCREMENT,
+        user_id bigint(20) NOT NULL,
+        stage varchar(255) NOT NULL,
+        video_url varchar(255) NOT NULL,
+        created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+        PRIMARY KEY  (id)
+    ) $charset_collate;";
+
+    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+    dbDelta($sql);
+}
+add_action('after_switch_theme', 'create_dress_progress_table');
+
 
 
 // Add Dress Progress menu in WP admin
@@ -64,7 +83,7 @@ function dress_progress_admin_page() {
                 wp_dropdown_users( array(
                 'name'             => 'user_id',
                 'show_option_none' => '— Select a User —',
-                'selected'         => 0, // none preselected
+                'selected'         => 0, 
             ) );
             ?>
             <br><br>
@@ -80,3 +99,28 @@ function dress_progress_admin_page() {
     </div>
     <?php
 }
+
+
+// Helper: render a video/embed or fallback link
+function dp_render_media( $url ) {
+    if ( empty( $url ) ) {
+        return '';
+    }
+
+    $url = esc_url_raw( $url );
+
+
+    if ( preg_match( '/\.(mp4|webm|ogg)(\?.*)?$/i', $url ) ) {
+        return '<video controls style="width:100%;border-radius:8px;max-height:480px;"><source src="' . esc_url( $url ) . '"></video>';
+    }
+
+   
+    $embed = wp_oembed_get( $url );
+    if ( $embed ) {
+        return '<div class="dp-embed-wrapper">' . $embed . '</div>';
+    }
+
+
+    return '<a href="' . esc_url( $url ) . '" target="_blank" rel="noopener">Open media</a>';
+}
+
