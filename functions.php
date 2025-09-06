@@ -16,19 +16,6 @@ add_filter('get_custom_logo', function($html) {
 
 <?php
 
-// function dress_progress_admin_menu() {
-//     add_menu_page(
-//         'Dress Progress',
-//         'Dress Progress',
-//         'manage_options',
-//         'dress-progress',
-//         'dress_progress_admin_page',
-//         'dashicons-admin-customizer',
-//         6
-//     );
-// }
-// add_action('admin_menu', 'dress_progress_admin_menu');
-
 
 // Add Dress Progress menu in WP admin
 function dress_progress_admin_menu() {
