@@ -30,24 +30,22 @@ get_header();
                 if ( $progress ) {
                     echo '<div class="dress-progress">';
                     foreach ( $progress as $step ) {
-                        $media_html = dp_render_media( $step->video_url );
-                        ?>
-                            <article class="dress-card card">
-                                <?php if ( $media_html ) : ?>
+                            ?>
+                                <article class="dress-card card">
                                     <div class="dress-card-media">
-                                        <?php echo $media_html; ?>
+                                        <a href="<?php echo esc_url( $step->video_url ); ?>" target="_blank">
+                                            <img src="/wp-content/uploads/2025/09/video-preview-scaled.jpg" alt="Video Preview">
+                                        </a>
                                     </div>
-                                <?php endif; ?>
-
-                                <div class="dress-card-body card-body">
-                                    <h3 class="dress-card-title card-title"><?php echo esc_html( $step->stage ); ?></h3>
-                                    <p class="dress-card-meta">Updated: <?php echo esc_html( date_i18n( 'F j, Y', strtotime( $step->created_at ) ) ); ?></p>
-                                    <?php if ( ! empty( $step->notes ) ) : // optional notes field ?>
-                                        <div class="dress-card-notes"><?php echo wp_kses_post( wpautop( $step->notes ) ); ?></div>
-                                    <?php endif; ?>
-                                </div>
-                            </article>
-                            <?php
+                                    <div class="dress-card-body card-body">
+                                        <h3 class="dress-card-title card-title"><?php echo esc_html( $step->stage ); ?></h3>
+                                        <p class="dress-card-meta">Updated: <?php echo esc_html( date_i18n( 'F j, Y', strtotime( $step->created_at ) ) ); ?></p>
+                                        <?php if ( ! empty( $step->notes ) ) : // optional notes field ?>
+                                            <div class="dress-card-notes"><?php echo wp_kses_post( wpautop( $step->notes ) ); ?></div>
+                                        <?php endif; ?>
+                                    </div>
+                                </article>
+                                <?php
                         }
                         echo '</div>';
                 } else {

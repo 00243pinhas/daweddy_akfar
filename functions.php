@@ -109,18 +109,26 @@ function dp_render_media( $url ) {
 
     $url = esc_url_raw( $url );
 
+    // If it's a Google Drive share link, convert it
+    // if ( preg_match('/drive\.google\.com.*\/d\/([a-zA-Z0-9_-]+)/', $url, $matches) ) {
+    //     $file_id = $matches[1];
+    //     $url = "https://drive.google.com/uc?export=download&id=" . $file_id;
+    //     return '<video controls style="width:100%;border-radius:8px;max-height:480px;"><source src="' . esc_url( $url ) . '" type="video/mp4"></video>';
+    // }
 
+    // direct video file (mp4/webm/ogg)
     if ( preg_match( '/\.(mp4|webm|ogg)(\?.*)?$/i', $url ) ) {
         return '<video controls style="width:100%;border-radius:8px;max-height:480px;"><source src="' . esc_url( $url ) . '"></video>';
     }
 
-   
+    // try WordPress oEmbed (YouTube, Vimeo, etc.)
     $embed = wp_oembed_get( $url );
     if ( $embed ) {
         return '<div class="dp-embed-wrapper">' . $embed . '</div>';
     }
 
-
+    // fallback: plain link
     return '<a href="' . esc_url( $url ) . '" target="_blank" rel="noopener">Open media</a>';
 }
+
 
