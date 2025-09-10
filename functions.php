@@ -15,26 +15,9 @@ add_filter('get_custom_logo', function($html) {
 
 
 <?php
-function create_dress_progress_table() {
-    global $wpdb;
-    $table_name = $wpdb->prefix . "dress_progress";
-    $charset_collate = $wpdb->get_charset_collate();
-
-    $sql = "CREATE TABLE IF NOT EXISTS $table_name (
-        id mediumint(9) NOT NULL AUTO_INCREMENT,
-        user_id bigint(20) NOT NULL,
-        stage varchar(255) NOT NULL,
-        video_url varchar(255) NOT NULL,
-        created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
-        PRIMARY KEY  (id)
-    ) $charset_collate;";
-
-    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    dbDelta($sql);
-}
-add_action('after_switch_theme', 'create_dress_progress_table');
 
 
+// ***********************start For the backend of the progress page management ***********************
 
 // Add Dress Progress menu in WP admin
 function dress_progress_admin_menu() {
@@ -56,45 +39,76 @@ function dress_progress_admin_page() {
     $table_name = $wpdb->prefix . "dress_progress";
 
     // Save progress if form submitted
-    if ( isset($_POST['submit_progress']) && !empty($_POST['user_id']) ) {
-        $user_id = intval($_POST['user_id']);
-        $stage   = sanitize_text_field($_POST['stage']);
-        $video   = esc_url_raw($_POST['video_url']);
+if ( isset($_POST['save_dress_progress']) && check_admin_referer('save_dress_progress', 'dress_progress_nonce') ) {
+    
+    $user_id       = intval($_POST['user_id']);
+    $dress_name    = sanitize_text_field($_POST['dress_name']);
+    $sample_image  = esc_url_raw($_POST['sample_image']);
+    $gallery_images = sanitize_textarea_field($_POST['gallery_images']); // comma separated
+    $description   = sanitize_textarea_field($_POST['description']);
+    $video_url     = esc_url_raw($_POST['video_url']);  
 
-        $wpdb->insert(
-            $table_name,
-            array(
-                'user_id'   => $user_id,
-                'stage'     => $stage,
-                'video_url' => $video,
-            )
-        );
+    $wpdb->insert(
+        $table_name,
+        array(
+            'user_id'       => $user_id,
+            'dress_name'    => $dress_name,
+            'sample_image'  => $sample_image,
+            'gallery_images'=> $gallery_images,
+            'description'   => $description,
+            'video_url'     => $video_url,
+        )
+    );
 
         echo "<div class='updated'><p> Progress added successfully for user ID: $user_id</p></div>";
+
     }
+    
 
     ?>
-    <div class="wrap">
+     <div class="wrap">
         <h1>Dress Progress</h1>
-        <form method="post">
-            
-            <label for="user_id"><strong>Select Client:</strong></label><br>
-            <?php
-                wp_dropdown_users( array(
-                'name'             => 'user_id',
-                'show_option_none' => '— Select a User —',
-                'selected'         => 0, 
-            ) );
-            ?>
-            <br><br>
+        <form method="post" enctype="multipart/form-data">
+            <?php wp_nonce_field('save_dress_progress', 'dress_progress_nonce'); ?>
 
-            <label for="stage"><strong>Progress Stage:</strong></label><br>
-            <input type="text" name="stage" required style="width: 300px;"><br><br>
+            <p>
+                <label>Dress Name:</label><br>
+                <input type="text" name="dress_name" required />
+            </p>
 
-            <label for="video_url"><strong>Video URL:</strong></label><br>
-            <input type="url" name="video_url" style="width: 300px;"><br><br>
+            <p>
+                <label>Sample Image (URL):</label><br>
+                <input type="text" name="sample_image" placeholder="https://example.com/sample.jpg" />
+            </p>
 
-            <input type="submit" name="submit_progress" class="button-primary" value="Add Progress">
+            <p>
+                <label>Gallery Images (comma separated URLs):</label><br>
+                <textarea name="gallery_images" rows="3" placeholder="https://... , https://..."></textarea>
+            </p>
+
+            <p>
+                <label>Description:</label><br>
+                <textarea name="description" rows="5"></textarea>
+            </p>
+
+            <p>
+                <label>Video URL (YouTube, Vimeo, etc):</label><br>
+                <input type="text" name="video_url" placeholder="https://youtube.com/..." />
+            </p>
+
+            <p>
+                <label>Assign to User:</label><br>
+                <select name="user_id" required>
+                    <option value="">-- Select a User --</option>
+                    <?php
+                    $users = get_users(array('role__in' => array('customer','subscriber','contributor','author','editor','administrator')));
+                    foreach ($users as $user) {
+                        echo '<option value="' . esc_attr($user->ID) . '">' . esc_html($user->display_name . ' (' . $user->user_email . ')') . '</option>';
+                    }
+                    ?>
+            </p>
+
+            <p><input type="submit" name="save_dress_progress" class="button button-primary" value="Save Progress" /></p>
         </form>
     </div>
     <?php
@@ -108,13 +122,6 @@ function dp_render_media( $url ) {
     }
 
     $url = esc_url_raw( $url );
-
-    // If it's a Google Drive share link, convert it
-    // if ( preg_match('/drive\.google\.com.*\/d\/([a-zA-Z0-9_-]+)/', $url, $matches) ) {
-    //     $file_id = $matches[1];
-    //     $url = "https://drive.google.com/uc?export=download&id=" . $file_id;
-    //     return '<video controls style="width:100%;border-radius:8px;max-height:480px;"><source src="' . esc_url( $url ) . '" type="video/mp4"></video>';
-    // }
 
     // direct video file (mp4/webm/ogg)
     if ( preg_match( '/\.(mp4|webm|ogg)(\?.*)?$/i', $url ) ) {
@@ -132,3 +139,29 @@ function dp_render_media( $url ) {
 }
 
 
+// *********************** End for the backend of the progress page management ***********************
+
+
+
+
+// ********************** Start bootstrap installation **********************
+
+function daweddy_child_enqueue_bootstrap() {
+    wp_enqueue_style(
+
+        'bootstrap-css',
+        'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css',
+        array(),
+        '5.3.3'
+
+    );
+    wp_enqueue_script(
+        'bootstrap-js',
+        'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js',
+        array('jquery'),
+        '5.3.3',
+        true
+    );
+}
+
+add_action('wp_enqueue_scripts', 'daweddy_child_enqueue_bootstrap');
