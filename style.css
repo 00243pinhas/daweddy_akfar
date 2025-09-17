@@ -112,7 +112,7 @@ Text Domain: afkar-child
 }
 .dress-card-meta {
   margin: 0 0 12px;
-  color: #777;
+  /* color: #777; */
   font-size: 13px;
 }
 
@@ -130,3 +130,111 @@ Text Domain: afkar-child
 /* TODO : need To fix the dark issue on the blog background */
 /* Todo need to fix the black logo on a black background */
 
+
+
+.catalog-container {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 30px;
+}
+
+.catalog-item {
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.catalog-item:hover {
+  transform: translateY(-5px);
+}
+
+.catalog-item img {
+  width: 100%;
+  height: 500px; 
+  object-fit: cover; /* crop without distortion */
+  border-radius: 8px;
+}
+
+.dress-name {
+  margin: 10px 0 5px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* .dress-subtitle {
+  font-size: 14px;
+  color: #555;
+} */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.card {
+  transition: transform 0.3s, box-shadow 0.3s;
+  /* cursor: pointer; */
+  border: none;
+}
+
+/* .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+} */
+
+.card-img-top {
+  height: 450px;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+/* .dress-card {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 300px;
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+} */
+
+.dress-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.dress-card .card-body {
+  background: rgba(0, 0, 0, 0.4); 
+  padding: 10px;
+}
+
+
+.heart-icon:hover {
+  transform: scale(1.2);
+}
+
+.card-title {
+
+  font-size: 19px;
+  font-weight:normal;
+  margin: 0;
+}

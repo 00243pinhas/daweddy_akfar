@@ -1,0 +1,42 @@
+<?php
+/* Template Name: Dress Catalog */
+
+
+get_header();
+?>
+<div class="container my-5">
+  <!-- <h1 class="text-center mb-4">Dresses Ideas </h1> -->
+  <div class="row">
+    <?php
+    $dress_query = new WP_Query([
+        'post_type' => 'dress',
+        'posts_per_page' => -1
+    ]);
+    if ( $dress_query->have_posts() ) :
+        while ( $dress_query->have_posts() ) : $dress_query->the_post();
+    ?>
+
+        <div class="col-md-3 mb-4 ">
+          <div class="card h-100">
+            <?php if ( has_post_thumbnail() ) : ?>
+              <div href="<?php the_permalink(); ?>">
+              <?php the_post_thumbnail('large', ['class' => 'card-img-top']); ?>
+              </div>
+            <?php endif; ?>
+            <div class="card-body text-center">
+              <h5 class="card-title"><?php the_title(); ?></h5>
+            <i class="fa-regular fa-heart"></i>
+            </div>
+          </div>
+        </div>
+    <?php
+        endwhile;
+        wp_reset_postdata();
+    else :
+    ?>
+      <p class="text-center">No dresses found.</p>
+    <?php endif; ?>
+  </div>
+</div>
+<?php
+get_footer();

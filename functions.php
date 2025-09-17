@@ -4,6 +4,7 @@ function afkar_child_enqueue_styles() {
     wp_enqueue_style('afkar-child-style', get_stylesheet_uri(), array('afkar-parent-style'));
     wp_enqueue_style('afkar-child-assets-style', get_stylesheet_directory_uri() . '/assets/css/style.css', array('afkar-parent-style', 'afkar-child-style'), null);
 }
+
 // This should be outside the function!
 add_action('wp_enqueue_scripts', 'afkar_child_enqueue_styles', 20);
 
@@ -165,3 +166,19 @@ function daweddy_child_enqueue_bootstrap() {
 }
 
 add_action('wp_enqueue_scripts', 'daweddy_child_enqueue_bootstrap');
+
+
+
+///********************** End bootstrap installation **********************
+
+
+///********************** Start Font Awesome installation **********************
+function daweddy_child_enqueue_font_awesome(){
+    wp_enqueue_style(
+        'font-awesome',
+        'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
+        [],
+        '6.4.0'
+    );
+}
+add_action('wp_enqueue_scripts', 'daweddy_child_enqueue_font_awesome', 25);
