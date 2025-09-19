@@ -1,3 +1,4 @@
+
 /*
 Theme Name: Afkar Child
 Theme URI: http://demo.bravisthemes.com/afkar-child/
@@ -221,9 +222,37 @@ Text Domain: afkar-child
   transform: scale(1.2);
 }
 
-.card-title {
+.modal-dialog {
+    max-width: 800px; 
+    max-height: 90vh; 
+}
 
-  font-size: 19px;
-  font-weight:normal;
-  margin: 0;
+/* .modal-content {
+    max-height: 80vh; 
+    overflow-y: auto;
+} */
+
+.modal-body img {
+    max-height: 70vh; 
+     width: auto; 
+     margin: 0 auto; 
+     display: block; 
+}
+
+
+
+
+/* Make the heart icon larger and toggle black on click */
+.big-heart {
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.big-heart.liked {
+  color: #111;
+}
+
+
+.dress-card .card-body {
+   background: none;
 }

@@ -19,13 +19,18 @@ get_header();
         <div class="col-md-3 mb-4 ">
           <div class="card h-100">
             <?php if ( has_post_thumbnail() ) : ?>
-              <div href="<?php the_permalink(); ?>">
-              <?php the_post_thumbnail('large', ['class' => 'card-img-top']); ?>
+              <div >
+              <a href="<?php the_permalink(); ?>" class="text-decoration-none">
+                <?php the_post_thumbnail('large', ['class' => 'card-img-top']); ?>
+              </a>  
               </div>
             <?php endif; ?>
-            <div class="card-body text-center">
-              <h5 class="card-title"><?php the_title(); ?></h5>
-            <i class="fa-regular fa-heart"></i>
+            <div class="card-body text-center d-flex justify-content-between align-items-center">
+              <a href="<?php the_permalink(); ?>" class="text-decoration-none">
+                <h5 class="card-title"><?php the_title(); ?></h5>
+              </a>
+
+              <span><i class="bi bi-heart big-heart"></i></span>
             </div>
           </div>
         </div>
