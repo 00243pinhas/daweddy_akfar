@@ -168,6 +168,14 @@ function daweddy_child_enqueue_bootstrap() {
 add_action('wp_enqueue_scripts', 'daweddy_child_enqueue_bootstrap');
 
 
+add_action('wp_enqueue_scripts', function() {
+    wp_enqueue_style(
+        'bootstrap-icons',
+        'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css',
+        [],
+        '1.11.3'
+    );
+}, 30);
 
 ///********************** End bootstrap installation **********************
 

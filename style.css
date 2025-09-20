@@ -256,3 +256,30 @@ Text Domain: afkar-child
 .dress-card .card-body {
    background: none;
 }
+
+
+.modal-content{
+    position: relative;
+    display: flex;  
+    pointer-events: auto;
+    background-color: transparent;
+    border: none;
+}
+
+
+.elementor-141 .elementor-element.elementor-element-31a67df:not(.elementor-motion-effects-element-type-background), .elementor-141 .elementor-element.elementor-element-31a67df > .elementor-motion-effects-container > .elementor-motion-effects-layer {
+    /* background-image: url(http://localhost:10013/wp-content/uploads/2022/07/cropped-D267pb-scaled-1.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover; */
+    display: none;
+}
+
+
+.elementor-346 .elementor-element.elementor-element-5bad35e:not(.elementor-motion-effects-element-type-background), .elementor-346 .elementor-element.elementor-element-5bad35e > .elementor-motion-effects-container > .elementor-motion-effects-layer {
+    /* background-image: url(http://localhost:10013/wp-content/uploads/2022/07/bg_title.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover; */
+    display: none;
+}

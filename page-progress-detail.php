@@ -22,8 +22,8 @@ if ( $step ) :
     <div class="card mb-4 shadow-sm">
         <div class="card-body text-center">
             <h2 class="card-title mb-1"><?php echo esc_html($step->stage); ?></h2>
-            <p class="text-muted mb-0">Updated: <?php echo esc_html( date_i18n('F j, Y', strtotime($step->created_at)) ); ?></p>
-            <span class="btn btn-dark mt-5">In Progress</span>
+            <p class="text-muted mb-0"> <?php echo esc_html( date_i18n('F j, Y', strtotime($step->created_at)) ); ?></p>
+            <span class=" mt-5">In Progress</span>
         </div>
     </div>
 
@@ -67,7 +67,7 @@ if ( $step ) :
     <div class="card-body text-center">
 
       <!-- Thumbnail / Cover image -->
-      <div class="position-relative d-inline-block" style=" height: 500px; overflow: hidden; object-fit: cover;">
+      <div class="position-relative d-inline-block" style=" height: 500px; overflow: hidden; object-fit: cover border-0;">
         <img src="/wp-content/uploads/2022/07/D267pb-scaled.jpg" 
              alt="Video Cover" 
              class="img-fluid rounded shadow"
