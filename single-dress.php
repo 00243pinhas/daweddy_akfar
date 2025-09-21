@@ -9,7 +9,10 @@
       <div class="d-flex justify-content-between align-items-center mb-3 ">
 
         <h1><?php the_title(); ?></h1>
-        <span><i class="bi bi-heart big-heart"></i></span>
+        
+        <span class="heart-icon" data-post-id="<?php echo get_the_ID(); ?>">
+          <i class="<?php echo (function_exists('is_post_favorited_by_user') && is_post_favorited_by_user(get_the_ID())) ? 'bi bi-heart-fill big-heart' : 'bi bi-heart big-heart'; ?>"></i>
+        </span>
       </div>
       
       <p><?php the_field('short_description'); ?></p>

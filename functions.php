@@ -3,10 +3,87 @@ function afkar_child_enqueue_styles() {
     wp_enqueue_style('afkar-parent-style', get_template_directory_uri() . '/style.css');
     wp_enqueue_style('afkar-child-style', get_stylesheet_uri(), array('afkar-parent-style'));
     wp_enqueue_style('afkar-child-assets-style', get_stylesheet_directory_uri() . '/assets/css/style.css', array('afkar-parent-style', 'afkar-child-style'), null);
+
+        wp_enqueue_script(
+        'favorites-js',
+        get_stylesheet_directory_uri() . '/js/favorites.js',
+        array(),
+        '1.0',
+        true
+    );
+
+    wp_localize_script('favorites-js', 'favoritesObj', array(
+        'ajax_url'           => admin_url('admin-ajax.php'),
+        'nonce'              => wp_create_nonce('favorites_nonce'),
+        'login_url'          => wp_login_url(), 
+        'is_user_logged_in'  => is_user_logged_in() ? 1 : 0,
+    ));
 }
+
 
 // This should be outside the function!
 add_action('wp_enqueue_scripts', 'afkar_child_enqueue_styles', 20);
+
+
+
+// AJAX handler for toggling favorite dresses
+
+function my_toggle_favorite_ajax() {
+    check_ajax_referer('favorites_nonce', 'nonce');
+
+   
+    if (! is_user_logged_in()) {
+        wp_send_json_error( array(
+            'message'   => 'login_required',
+            'login_url' => wp_login_url( wp_get_referer() ?: home_url() )
+        ), 403 );
+    }
+
+    $user_id = get_current_user_id();
+    $post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
+
+    if (! $post_id) {
+        wp_send_json_error( array('message' => 'invalid_post') );
+    }
+
+    $meta_key = 'favorite_dresses';
+    $favorites = get_user_meta($user_id, $meta_key, true);
+    if (! is_array($favorites)) $favorites = array();
+
+    if ( in_array($post_id, $favorites, true) ) {
+        // remove
+        $favorites = array_values(array_diff($favorites, array($post_id)));
+        update_user_meta($user_id, $meta_key, $favorites);
+        wp_send_json_success( array('status' => 'removed', 'favorites' => array_values($favorites)) );
+    } else {
+        // add
+        $favorites[] = $post_id;
+        $favorites = array_values(array_unique($favorites));
+        update_user_meta($user_id, $meta_key, $favorites);
+        wp_send_json_success( array('status' => 'added', 'favorites' => array_values($favorites)) );
+    }
+}
+add_action('wp_ajax_toggle_favorite', 'my_toggle_favorite_ajax');
+
+
+function is_post_favorited_by_user($post_id, $user_id = null) {
+    if (!$user_id) {
+        $user_id = get_current_user_id();
+    }
+    if (!$user_id) {
+        return false; 
+    }
+
+    $favorites = get_user_meta($user_id, 'favorite_posts', true);
+    if (!is_array($favorites)) {
+        $favorites = [];
+    }
+
+    return in_array($post_id, $favorites);
+}
+
+
+// Customize the site logo
 
 add_filter('get_custom_logo', function($html) {
     $custom_logo_url = get_stylesheet_directory_uri() . '/assets/img/logo.png';
@@ -180,13 +257,3 @@ add_action('wp_enqueue_scripts', function() {
 ///********************** End bootstrap installation **********************
 
 
-///********************** Start Font Awesome installation **********************
-function daweddy_child_enqueue_font_awesome(){
-    wp_enqueue_style(
-        'font-awesome',
-        'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
-        [],
-        '6.4.0'
-    );
-}
-add_action('wp_enqueue_scripts', 'daweddy_child_enqueue_font_awesome', 25);

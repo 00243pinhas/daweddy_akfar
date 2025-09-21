@@ -30,7 +30,22 @@ get_header();
                 <h5 class="card-title"><?php the_title(); ?></h5>
               </a>
 
-              <span><i class="bi bi-heart big-heart"></i></span>
+              <!-- <span class="heart-icon" data-post-id="<?php echo get_the_ID(); ?>">
+                <i class="<?php echo (function_exists('is_post_favorited_by_user') && is_post_favorited_by_user(get_the_ID())) ? 'bi bi-heart-fill big-heart' : 'bi bi-heart big-heart'; ?>"></i>
+              </span> -->
+
+              <?php
+              // Check if current user has favorited this post
+              $is_favorited = function_exists('is_post_favorited_by_user') 
+                  ? is_post_favorited_by_user(get_the_ID()) 
+                  : false;
+              ?>
+
+              <span class="heart-icon" data-post-id="<?php echo get_the_ID(); ?>">
+                <i class="bi <?php echo $is_favorited ? 'bi-heart-fill big-heart text-danger' : 'bi-heart big-heart'; ?>"></i>
+              </span>
+
+
             </div>
           </div>
         </div>

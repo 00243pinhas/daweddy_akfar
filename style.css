@@ -283,3 +283,26 @@ Text Domain: afkar-child
     background-size: cover; */
     display: none;
 }
+
+
+/* heart icon */
+
+.heart-icon {
+  cursor: pointer;
+  font-size: 1.3rem; /* adjust size */
+  color: #666;
+  transition: transform .12s ease, color .12s ease, opacity .12s ease;
+}
+
+.heart-icon:hover {
+  transform: scale(1.12);
+}
+
+.heart-icon.liked {
+  color: black; /* red when liked */
+}
+
+.heart-icon.loading {
+  opacity: .6;
+  pointer-events: none;
+}
