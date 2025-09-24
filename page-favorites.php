@@ -20,32 +20,40 @@ get_header();
         $args = [
             'post__in' => $favorites,
             'post_type' => 'dress', 
-            'orderby' => 'post__in'
+            'orderby' => 'post__in',
+            'posts_per_page' => -1,
         ];
 
         $query = new WP_Query($args);
 
         if($query -> have_posts()){
-            echo '<div class="row">';
-
-            while($query -> have_posts()){
-                $query->the_post(); ?>
-
-                <div class="col-md-3 mb-4 ">
-                    <a href="<?php the_permalink(); ?>">
-                        <?php if (has_post_thumbnail()) {
-                            the_post_thumbnail('medium', ['class' => 'img-fluid']);
-                        } ?>
-                        <h4><?php the_title(); ?></h4>
-                    </a>
-                </div>
-
-                  <?php }
-
+            echo '<div class="container my-5">';
+            echo '<div class="text-center mb-5">';
+            echo '<h1 class="display-5 fw-bold">Ideas Recorded</h1>';
+            echo '<p class="text-muted">Here are the dresses you saved to favorites.</p>';
             echo '</div>';
-                
-               wp_reset_postdata(); 
-        } else {    
+            echo '<div class="row">';
+            while($query -> have_posts()){
+                $query->the_post();
+                echo '<div class="col-md-3 mb-4">';
+                echo '<div class="card h-100">';
+                if(has_post_thumbnail()){
+                    echo '<a href="' . get_permalink() . '" class="text-decoration-none">';
+                    echo get_the_post_thumbnail(get_the_ID(), 'large', ['class' => 'card-img-top']);
+                    echo '</a>';
+                }
+                echo '<div class="card-body text-center d-flex justify-content-between align-items-center">';
+                echo '<a href="' . get_permalink() . '" class="text-decoration-none">';
+                echo '<h5 class="card-title">' . get_the_title() . '</h5>';
+                echo '</a>';
+                echo '</div>';
+                echo '</div>';
+                echo '</div>';
+            }
+            echo '</div>';
+            echo '</div>';
+            wp_reset_postdata();
+        } else {
             echo '<p>You have no favorite posts yet.</p>';
         }
 

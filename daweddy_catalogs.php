@@ -4,6 +4,10 @@
 
 get_header();
 ?>
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold">Daweddy Catalogs</h1>
+        <p class="text-muted">Here are the dresses That Can inspire you.</p>
+    </div>
 <div class="container my-5">
   <!-- <h1 class="text-center mb-4">Dresses Ideas </h1> -->
   <div class="row">
@@ -30,12 +34,7 @@ get_header();
                 <h5 class="card-title"><?php the_title(); ?></h5>
               </a>
 
-              <!-- <span class="heart-icon" data-post-id="<?php echo get_the_ID(); ?>">
-                <i class="<?php echo (function_exists('is_post_favorited_by_user') && is_post_favorited_by_user(get_the_ID())) ? 'bi bi-heart-fill big-heart' : 'bi bi-heart big-heart'; ?>"></i>
-              </span> -->
-
               <?php
-              // Check if current user has favorited this post
               $is_favorited = function_exists('is_post_favorited_by_user') 
                   ? is_post_favorited_by_user(get_the_ID()) 
                   : false;
