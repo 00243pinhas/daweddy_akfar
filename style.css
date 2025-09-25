@@ -306,3 +306,14 @@ Text Domain: afkar-child
   opacity: .6;
   pointer-events: none;
 }
+
+
+#pxl-main .elementor-section.elementor-section-boxed > .elementor-container {
+    /* max-width: 1200px;
+    margin: 0 auto; */
+    margin-top: 30px;
+}
+
+.item--date, .item--author{
+  display: none !important;
+}

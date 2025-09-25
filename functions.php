@@ -21,6 +21,18 @@ function afkar_child_enqueue_styles() {
 }
 
 
+//  ************************ Load child theme textdomain *************************
+
+add_action( 'after_setup_theme', 'child_theme_setup' );
+function child_theme_setup() {
+    load_child_theme_textdomain( 'afkar-child', get_stylesheet_directory() . '/languages' );
+}
+
+
+/// ************************ Enqueue styles *************************
+
+
+
 // This should be outside the function!
 add_action('wp_enqueue_scripts', 'afkar_child_enqueue_styles', 20);
 
@@ -255,5 +267,118 @@ add_action('wp_enqueue_scripts', function() {
 }, 30);
 
 ///********************** End bootstrap installation **********************
+
+
+///********************** Db booking **********************
+
+// Run on theme/plugin activation
+// function my_booking_create_table() {
+//     global $wpdb;
+//     $table = $wpdb->prefix . 'bookings';
+
+//     $charset_collate = $wpdb->get_charset_collate();
+
+//     $sql = "CREATE TABLE $table (
+//         id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+//         name VARCHAR(100) NOT NULL,
+//         phone VARCHAR(30) NOT NULL,
+//         email VARCHAR(100) NOT NULL,
+//         service VARCHAR(100) NOT NULL,
+//         date DATE NOT NULL,
+//         time VARCHAR(20) NOT NULL,
+//         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+//         UNIQUE KEY unique_slot (date, time), 
+//         PRIMARY KEY  (id)
+//     ) $charset_collate;";
+
+//     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+//     dbDelta($sql);
+// }
+// add_action('after_switch_theme', 'my_booking_create_table');
+//********************** End Db booking **********************
+
+//********************** Start Ajax booking **********************
+
+
+function my_submit_booking() {
+    check_ajax_referer('submit_booking_nonce', 'nonce');
+
+    global $wpdb;
+    $table = $wpdb->prefix . 'bookings';
+
+    $name    = sanitize_text_field($_POST['name']);
+    $phone   = sanitize_text_field($_POST['phone']);
+    $email   = sanitize_email($_POST['email']);
+    $service = sanitize_text_field($_POST['service']);
+    $date    = sanitize_text_field($_POST['date']);
+    $time    = sanitize_text_field($_POST['timeSlot']);
+
+    $inserted = $wpdb->insert($table, [
+        'name'    => $name,
+        'phone'   => $phone,
+        'email'   => $email,
+        'service' => $service,
+        'date'    => $date,
+        'time'    => $time
+    ]);
+
+
+    if ($inserted) {
+        wp_send_json_success(['id' => $wpdb->insert_id]);
+    } else {
+        error_log('Booking insert error: ' . $wpdb->last_error);
+        wp_send_json_error('Time slot already taken.');
+}
+}
+add_action('wp_ajax_submit_booking', 'my_submit_booking');
+add_action('wp_ajax_nopriv_submit_booking', 'my_submit_booking');
+//********************** End Ajax booking **********************s
+
+// ********************** enqueue booking js **********************
+
+function my_booking_scripts() {
+    wp_enqueue_script(
+        'booking-js',
+        get_stylesheet_directory_uri() . '/js/booking.js',
+        array('jquery'), // or [] if you don't use jQuery
+        null,
+        true
+    );
+    wp_localize_script('booking-js', 'booking_vars', [
+        'ajax_url' => admin_url('admin-ajax.php'),
+        'nonce'    => wp_create_nonce('submit_booking_nonce')
+    ]);
+}
+add_action('wp_enqueue_scripts', 'my_booking_scripts');
+// ********************** End enqueue booking js **********************
+
+/// ************* Start time slots **********************
+
+function my_get_time_slots() {
+    check_ajax_referer('submit_booking_nonce', 'nonce');
+
+    global $wpdb;
+    $table = $wpdb->prefix . 'bookings';
+
+    $date = sanitize_text_field($_POST['date']);
+
+    // Define your working hours
+    $all_slots = ['09:00', '10:00', '11:00', '12:00',
+                  '13:00', '14:00', '15:00', '16:00'];
+
+    // Get taken slots from DB
+    $taken = $wpdb->get_col(
+        $wpdb->prepare("SELECT time FROM $table WHERE date = %s", $date)
+    );
+
+    // Calculate available ones
+    $available = array_values(array_diff($all_slots, $taken));
+
+    wp_send_json_success($available);
+}
+add_action('wp_ajax_get_time_slots', 'my_get_time_slots');
+add_action('wp_ajax_nopriv_get_time_slots', 'my_get_time_slots');
+
+// ************* End time slots **********************
 
 
